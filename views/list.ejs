@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <button id="write">글쓰기</button>
+    <table border="2">
+      <tr>
+        <th>번호</th>
+        <th>제목</th>
+        <th>글쓴이</th>
+        <th>내용</th>
+        <th>조회수</th>
+        <th>수정일</th>
+      </tr>
+      <%
+      for(var i = 0; i<rows.length; i++)
+      {
+      %>
+      <tr>
+        <td><%=rows[i].BNO%></td>
+        <td><%=rows[i].BTITLE%></td>
+        <td><%=rows[i].BWRITER%></td>
+        <td><%=rows[i].BCONTENT%></td>
+        <td><%=rows[i].CLICK_CNT%></td>
+        <td><%=rows[i].UPLOAD_DATE%></td>
+      </tr>
+      <%
+      }
+      %>
+
+    </table>
+  </body>
+  <script type="text/javascript">
+  	$(function(){
+  		$("tr").on('click', function(e) {
+  			if( e.currentTarget.rowIndex == 0 ) return; 
+			var bno = $(this).children().first().text();
+  			window.location.assign('/boards/read/' + bno);
+  		});
+  		
+  		$("#write").on('click', function() {
+  			console.log("button click!");
+  			location.assign('/boards/write');
+  		})
+  	});
+  	
+  </script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

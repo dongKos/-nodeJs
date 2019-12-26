@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  </head>
+  <%
+    var read = rows[0];
+  %>
+  <body>
+    <h1><%= title %></h1>
+    <table border="2">
+      <tr>
+        <th>번호</th>
+        <td id="bno"><%=read.BNO%></td>
+        <th>조회수</th>
+        <td><%=read.CLICK_CNT%></td>
+        <th>글쓴이</th>
+        <td><%=read.BWRITER%></td>
+      </tr>
+      <tr>
+        <th>제목</th>
+        <td colspan="5" id="bTitle"><%=read.BTITLE%></td>
+      </tr>
+      <tr>
+        <th>작성일</th>
+        <td colspan="2"><%=read.UPLOAD_DATE%></td>
+        <th>수정일</th>
+        <td colspan="2"><%=read.UPLOAD_DATE%></td>
+      </tr>
+      <tr>
+        <td colspan="6" height="400" id='bContent'><%=read.BCONTENT%></td>
+      </tr>
+      <tr>
+        <td colspan="6">
+          <button onclick='location.href="/boards"'> 목록 </button>
+          <button id='textEdit' onclick="textEdit();">수정</button>
+          <button id="delete" onclick="deleteFunc()">삭제</button>
+          <button id='update' onclick="update();" style='display: none; float: right;'>완료</button>
+        </td>
+      </tr>
+    </table>
+  </body>
+  <script type="text/javascript">
+  	function textEdit() {
+  		$("#update").css('display', 'inline-block');
+  		
+  		$("#bTitle").text('');
+  		var textBox = "<textarea id='newbTitle' style='resize: none; width: 99%; height: 100%'></textarea>";
+  		$("#bTitle").append(textBox);
+  		
+  		$("#bContent").text('');
+  		var textBox = "<textarea id='newbContent' style='resize: none; width: 99%; height: 100%'></textarea>";
+  		$("#bContent").append(textBox);
+  	}
+  	
+  	function update() {
+  		if($("#newbTitle").val().length == 0 || $("#newbContent").val().length == 0) {
+  			alert('수정사항을 입략하세요');
+  		} else {
+  			var sendData = {
+  				bno: $('#bno').text(),
+  				bTitle: $("#newbTitle").val(),
+  				bContent: $("#newbContent").val()
+  			};
+  			
+  			$.ajax({
+  				url: "/boards/update/",
+  				data: sendData,
+  				method: "POST",
+  				success: function(data) {
+  					console.log(data);
+  					location.assign("/boards");
+  				},
+  				error: function() {
+  					console.log("Fail Update!");
+  				}
+  			})
+  		}
+  	}
+  	
+  	function deleteFunc() {
+  		var bno = $("#bno").text();
+  		window.location.assign('/boards/delete/' + bno);
+  	}
+  </script>
+</html>
